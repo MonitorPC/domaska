@@ -16,11 +16,22 @@ if a == '1':
     height = img.size[1]
     pixels = img.load()
 
-    for elem in [ord(i) for i in input('Ваше сообщение: ')]:
+    list_elem = []
+    for i in input('Ваше сообщение: '):
+        if ord(i) < 1040:
+            list_elem.append([ord(i)])
+        else:
+            list_elem.append([ord(i) - 1000, 'r'])
+
+    for elem in list_elem:
+        print(elem)
         key = (randint(1, width - 1), randint(1, height - 1))
         red, green = pixels[key][:2]
-        draw.point(key, (red, green, elem))
-        keys.write(str(key[0]) + ' ' + str(key[-1]) + '\n')
+        draw.point(key, (red, green, elem[0]))
+        if elem[-1] == 'r':
+            keys.write(str(key[0]) + ' ' + str(key[-1]) + ' ' + 'r' + ' ' + '\n')
+        else:
+            keys.write(str(key[0]) + ' ' + str(key[-1]) + '\n')
 
     img.save('codirovka/zacodirovan.png', 'PNG')
     keys.close()
@@ -30,7 +41,7 @@ elif a == '2':
     path_file = input('Путь до папки "codirovka": ')
 
     keys = open(f'{path_file}\key.txt')
-    keys = [i.split(' ') for i in keys.readlines()]
+    keys = [i.strip().split(' ') for i in keys.readlines()]
 
     img = Image.open(f'{path_file}\zacodirovan.png')
 
@@ -38,6 +49,11 @@ elif a == '2':
     message = ''
 
     for i in keys:
-        message += chr(pixels[int(i[0]), int(i[-1])][2])
+        print(i)
+        if i[-1] == 'r':
+            print(pixels[int(i[0]), int(i[1])][2] + 1000)
+            message += chr(pixels[int(i[0]), int(i[1])][2] + 1000)
+        else:
+            message += chr(pixels[int(i[0]), int(i[1])][2])
 
     print('Ваше сообщение: ' + message)
