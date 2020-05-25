@@ -48,7 +48,6 @@ def decode():
 
     for i in keys:
         if i[-1] == 'r':
-            print(pixels[int(i[0]), int(i[1])][2] + 1000)
             message += chr(pixels[int(i[0]), int(i[1])][2] + 1000)
         else:
             message += chr(pixels[int(i[0]), int(i[1])][2])
