@@ -1,6 +1,18 @@
 from PIL import Image, ImageDraw
 from random import randint
 import os
+from tkinter import filedialog as fd
+from tkinter import Tk
+
+
+def get_path(type):
+    root = Tk()
+    if type:
+        name_file = fd.askopenfilename(title='Выберите изображение')
+    else:
+        name_file = fd.askopenfilename(title='Файл "key.txt"')
+    root.destroy()
+    return name_file
 
 
 def encode():
@@ -9,7 +21,7 @@ def encode():
 
     keys = open('coding_img/key.txt', 'w')
 
-    img = Image.open(input('Путь до картинки: '))
+    img = Image.open(get_path(1))
     draw = ImageDraw.Draw(img)
 
     width = img.size[0]
@@ -38,10 +50,10 @@ def encode():
 
 
 def decode():
-    keys = open(input('Путь до "key.txt": '))
+    keys = open(get_path(0))
     keys = [i.strip().split(' ') for i in keys.readlines()]
 
-    img = Image.open(input('Путь до картинки с сообщением: '))
+    img = Image.open(get_path(1))
 
     pixels = img.load()
     message = ''
